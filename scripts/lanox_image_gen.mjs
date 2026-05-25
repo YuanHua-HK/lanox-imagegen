@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const DEFAULT_BASE_URL = "http://47.236.135.217:1456/v1";
+const DEFAULT_BASE_URL = "https://api.lanox.ai/v1";
 const DEFAULT_RESPONSES_MODEL = "gpt-5.5";
 const DEFAULT_IMAGE_MODEL = "gpt-image-2";
 const DEFAULT_SIZE = "1024x1024";
