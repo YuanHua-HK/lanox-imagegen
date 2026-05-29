@@ -2,7 +2,7 @@
 
 This skill calls the API endpoint:
 
-- `POST http://47.236.135.217:1456/v1/responses`
+- `POST https://api.lanox.ai/v1/responses`
 
 Request style:
 

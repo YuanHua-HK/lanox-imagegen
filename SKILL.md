@@ -34,7 +34,7 @@ The script:
 
 ## Defaults
 
-- Base URL: `http://47.236.135.217:1456/v1`
+- Base URL: `https://api.lanox.ai/v1`
 - Default responses model: `gpt-5.5`
 - Default image model: `gpt-image-2`
 - Default output directory: `data/generated-images`
