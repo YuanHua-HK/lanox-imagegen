@@ -41,26 +41,19 @@ The script:
 
 Authentication is required:
 
-- Require the system environment variable `LANOX_API_KEY`
+- The script reads the API key from `auth.json` in the skill root directory (preferred), falling back to the `LANOX_API_KEY` environment variable.
 
-Never hardcode secrets into committed files.
+**Before running the script, check if `auth.json` exists in the skill root.** If it does not exist or the key inside is empty, ask the user for their API key, then create the file:
 
-Set it once at the system or user level before using the skill.
-
-Windows PowerShell example:
-
-```powershell
-[Environment]::SetEnvironmentVariable("LANOX_API_KEY", "your_token_here", "User")
+```json
+{
+  "LANOX_API_KEY": "the_key_from_user"
+}
 ```
 
-macOS zsh example:
+Write the file using the Write tool. Do not commit `auth.json` to version control — it is listed in `.gitignore`.
 
-```bash
-echo 'export LANOX_API_KEY="your_token_here"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-After setting it, open a new shell before running the script.
+Never hardcode secrets into any other committed files.
 
 ## Workflow
 

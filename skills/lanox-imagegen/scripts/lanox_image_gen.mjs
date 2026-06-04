@@ -1,5 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const AUTH_JSON_PATH = path.resolve(__dirname, "..", "auth.json");
 
 const DEFAULT_BASE_URL = "https://api.lanox.ai/v1";
 const DEFAULT_RESPONSES_MODEL = "gpt-5.5";
@@ -13,10 +17,21 @@ function readEnv(primary, fallback) {
   return process.env[primary] || (fallback ? process.env[fallback] : "") || "";
 }
 
-function parseArgs(argv) {
+async function readApiKeyFromAuth() {
+  try {
+    const raw = await fs.readFile(AUTH_JSON_PATH, "utf-8");
+    const data = JSON.parse(raw);
+    return data.LANOX_API_KEY || "";
+  } catch {
+    return "";
+  }
+}
+
+async function parseArgs(argv) {
+  const authKey = await readApiKeyFromAuth();
   const result = {
     baseUrl: readEnv("LANOX_IMAGEGEN_BASE_URL") || DEFAULT_BASE_URL,
-    apiKey: readEnv("LANOX_API_KEY"),
+    apiKey: authKey || readEnv("LANOX_API_KEY"),
     responsesModel:
       readEnv("LANOX_IMAGEGEN_RESPONSES_MODEL") || DEFAULT_RESPONSES_MODEL,
     imageModel: readEnv("LANOX_IMAGEGEN_IMAGE_MODEL") || DEFAULT_IMAGE_MODEL,
@@ -101,7 +116,7 @@ function parseArgs(argv) {
   }
 
   if (!result.apiKey) {
-    throw new Error("Missing API key. Set the system environment variable LANOX_API_KEY.");
+    throw new Error("Missing API key. Write {\"LANOX_API_KEY\":\"your_token\"} to auth.json in the skill root, or set the LANOX_API_KEY environment variable.");
   }
   if (!result.prompt) {
     throw new Error("Missing prompt. Pass --prompt or set LANOX_IMAGEGEN_IMAGE_PROMPT.");
@@ -135,8 +150,9 @@ Options:
   --output-dir <dir>          Save directory. Default: ${DEFAULT_OUTPUT_DIR}
   --image <path>              Reference image path; repeat for multiple images
 
-Environment:
-  LANOX_API_KEY               Required
+Authentication:
+  auth.json                   {"LANOX_API_KEY":"..."} in skill root (preferred)
+  LANOX_API_KEY               Fallback environment variable
 `;
   process.stdout.write(text.trimStart());
   process.stdout.write("\n");
@@ -317,7 +333,7 @@ async function saveImages(outputDir, images) {
 }
 
 async function main() {
-  const params = parseArgs(process.argv.slice(2));
+  const params = await parseArgs(process.argv.slice(2));
   const content = await buildInputContent(params.prompt, params.inputImages);
   const savedRuns = [];
 
