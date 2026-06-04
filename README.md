@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/YuanHua-HK/skills)](https://skills.sh/YuanHua-HK/skills)
 
-A Claude Code skill for generating and editing images through the Lanox Responses API.
+An agent skill for generating and editing images through the Lanox Responses API. Works with any AI coding agent that supports the skills format.
 
 ## Install
 
@@ -19,7 +19,7 @@ npx skills add https://github.com/YuanHua-HK/skills --skill lanox-imagegen
 
 ## Authentication
 
-On first use, Claude will ask for your API key and save it to `auth.json` in the skill directory. This file is gitignored.
+On first use, the agent will ask for your API key and save it to `auth.json` in the skill directory. This file is gitignored.
 
 You can also set the `LANOX_API_KEY` environment variable as a fallback.
 

@@ -1,6 +1,6 @@
 ---
 name: "lanox-imagegen"
-description: "Generate or edit raster images through the Lanox Responses API. Use when the user wants image generation or reference-image editing through the project's API endpoint instead of built-in image tools or direct OpenAI API keys."
+description: "Generate or edit raster images through the Lanox Responses API. Use when the user wants image generation or reference-image editing through the project's API endpoint."
 ---
 
 # Lanox Imagegen
@@ -9,16 +9,14 @@ Generates or edits images by calling the project's Lanox `POST /v1/responses` en
 
 ## When to use
 
-- The user wants image generation routed through the project's API
-- The user wants OpenAI-style image generation without changing `openclaw`
+- The user wants image generation routed through the Lanox API
 - The user wants reference-image editing through the same API path
 - The user asks for a scriptable, repo-local image generation path
 
 ## When not to use
 
-- The user wants the built-in Codex image tool
 - The task is better handled by editing repo-native SVG, HTML/CSS, or canvas assets directly
-- The user needs a different provider path that is unrelated to this API path
+- The user needs a different provider path that is unrelated to this API
 
 ## Top-level mode
 
