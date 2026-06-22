@@ -8,6 +8,7 @@ An agent skill for generating and editing images through the Lanox Responses API
 
 ```bash
 npx skills add https://github.com/YuanHua-HK/skills --skill lanox-imagegen
+npx skills add https://github.com/YuanHua-HK/skills --skill sqlbot
 ```
 
 ## What it does
@@ -28,6 +29,7 @@ You can also set the `LANOX_API_KEY` environment variable as a fallback.
 | Skill | Description |
 |---|---|
 | `lanox-imagegen` | Generate or edit raster images through the Lanox Responses API |
+| `sqlbot` | Ask a SQLBot instance natural-language data questions (Text-to-SQL) over HTTP |
 
 ## File structure
 
@@ -39,4 +41,11 @@ skills/
       lanox_image_gen.mjs # Execution script
     references/
       api.md              # API reference
+  sqlbot/
+    SKILL.md              # Skill definition
+    config.json           # SQLBot base URL / context path
+    scripts/
+      sqlbot.mjs          # Execution script
+    references/
+      endpoints.md        # HTTP endpoint reference
 ```

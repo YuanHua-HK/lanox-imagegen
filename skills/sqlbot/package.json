@@ -1,0 +1,13 @@
+{
+  "name": "sqlbot-skill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Node HTTP client for SQLBot's MCP-equivalent endpoints (/api/v1/mcp/*).",
+  "bin": {
+    "sqlbot": "scripts/sqlbot.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
