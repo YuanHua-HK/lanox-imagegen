@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const AUTH_JSON_PATH = path.resolve(__dirname, "..", "auth.json");
 
 const DEFAULT_BASE_URL = "https://api.lanox.ai";
-const DEFAULT_MODEL = "lanox-image-2";
+const DEFAULT_MODEL = "lanox-image-2.5-flare";
 const DEFAULT_ASPECT_RATIO = "1:1";
 const DEFAULT_RESOLUTION = "1080p";
 const DEFAULT_POLL_INTERVAL_MS = 3000;
@@ -34,18 +34,18 @@ async function readApiKeyFromAuth() {
 async function parseArgs(argv) {
   const authKey = await readApiKeyFromAuth();
   const result = {
-    baseUrl: readEnv("LANOX_IMAGE_2_BASE_URL") || DEFAULT_BASE_URL,
+    baseUrl: readEnv("LANOX_IMAGE_BASE_URL") || DEFAULT_BASE_URL,
     apiKey: authKey || readEnv("LANOX_API_KEY"),
-    model: readEnv("LANOX_IMAGE_2_MODEL") || DEFAULT_MODEL,
-    prompt: readEnv("LANOX_IMAGE_2_PROMPT"),
-    aspectRatio: readEnv("LANOX_IMAGE_2_ASPECT_RATIO") || DEFAULT_ASPECT_RATIO,
-    resolution: readEnv("LANOX_IMAGE_2_RESOLUTION") || DEFAULT_RESOLUTION,
-    inputImage: readEnv("LANOX_IMAGE_2_INPUT_IMAGE"),
-    idempotencyKey: readEnv("LANOX_IMAGE_2_IDEMPOTENCY_KEY") || undefined,
-    pollIntervalMs: Number(readEnv("LANOX_IMAGE_2_POLL_INTERVAL_MS") || DEFAULT_POLL_INTERVAL_MS),
-    maxPollAttempts: Number(readEnv("LANOX_IMAGE_2_MAX_POLL_ATTEMPTS") || DEFAULT_MAX_POLL_ATTEMPTS),
-    timeoutMs: Number(readEnv("LANOX_IMAGE_2_TIMEOUT_MS") || DEFAULT_TIMEOUT_MS),
-    outputDir: readEnv("LANOX_IMAGE_2_OUTPUT_DIR") || DEFAULT_OUTPUT_DIR,
+    model: readEnv("LANOX_IMAGE_MODEL") || DEFAULT_MODEL,
+    prompt: readEnv("LANOX_IMAGE_PROMPT"),
+    aspectRatio: readEnv("LANOX_IMAGE_ASPECT_RATIO") || DEFAULT_ASPECT_RATIO,
+    resolution: readEnv("LANOX_IMAGE_RESOLUTION") || DEFAULT_RESOLUTION,
+    inputImage: readEnv("LANOX_IMAGE_INPUT_IMAGE"),
+    idempotencyKey: readEnv("LANOX_IMAGE_IDEMPOTENCY_KEY") || undefined,
+    pollIntervalMs: Number(readEnv("LANOX_IMAGE_POLL_INTERVAL_MS") || DEFAULT_POLL_INTERVAL_MS),
+    maxPollAttempts: Number(readEnv("LANOX_IMAGE_MAX_POLL_ATTEMPTS") || DEFAULT_MAX_POLL_ATTEMPTS),
+    timeoutMs: Number(readEnv("LANOX_IMAGE_TIMEOUT_MS") || DEFAULT_TIMEOUT_MS),
+    outputDir: readEnv("LANOX_IMAGE_OUTPUT_DIR") || DEFAULT_OUTPUT_DIR,
     mode: "generate",
   };
 
@@ -93,7 +93,7 @@ async function parseArgs(argv) {
     throw new Error("Missing API key. Write {\"LANOX_API_KEY\":\"your_token\"} to auth.json in the skill root, or set the LANOX_API_KEY environment variable.");
   }
   if (!result.prompt) {
-    throw new Error("Missing prompt. Pass --prompt or set LANOX_IMAGE_2_PROMPT.");
+    throw new Error("Missing prompt. Pass --prompt or set LANOX_IMAGE_PROMPT.");
   }
   if (result.mode === "edit" && !result.inputImage) {
     throw new Error("Edit mode requires --image <path>.");
@@ -110,8 +110,8 @@ async function parseArgs(argv) {
 function printHelpAndExit(code) {
   const text = `
 Usage:
-  node skills/lanox-image-2/scripts/lanox_image_2.mjs --prompt "A blue square"
-  node skills/lanox-image-2/scripts/lanox_image_2.mjs --edit --prompt "Change background" --image input.png
+  node skills/lanox-image/scripts/lanox_image.mjs --prompt "A blue square"
+  node skills/lanox-image/scripts/lanox_image.mjs --edit --prompt "Change background" --image input.png
 
 Options:
   --generate                  Text-to-image mode (default)
@@ -319,7 +319,7 @@ async function main() {
   const imageBuffer = await downloadImage(imageUrl);
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  const fileName = `lanox-image-2-${timestamp}.png`;
+  const fileName = `lanox-image-${timestamp}.png`;
   const saved = await saveImage(params.outputDir, imageBuffer, fileName);
 
   process.stderr.write(`Image saved: ${saved.path} (${saved.bytes} bytes)\n`);
@@ -351,3 +351,4 @@ main().catch((error) => {
   process.stderr.write(`${message}\n`);
   process.exitCode = 1;
 });
+
